@@ -1,5 +1,5 @@
 # VNTextPatch
-This fork fixes issues with text-wrapping and ruby text.
+This fork fixes issues with text-wrapping and ruby text in Hulotte games.
 
 A tool for extracting original text from, and patching translated text into, a variety of visual novel formats. Currently the following engines are supported:
 * AdvHD (.ws2)
