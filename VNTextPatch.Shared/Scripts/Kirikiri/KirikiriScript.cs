@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +17,8 @@ namespace VNTextPatch.Shared.Scripts.Kirikiri
         private static readonly string[] NameCommands = { "nm", "set_title", "speaker", "Talk" };
         private static readonly string[] EnterNameCommands = { "ns" };
         private static readonly string[] ExitNameCommands = { "nse" };
-        private static readonly string[] MessageCommands = { "sel01", "sel02", "sel03", "sel04", "AddSelect", "ruby" };
-        private static readonly string[] AllowedInlineCommands = { "r", "ruby", "ruby_c", "heart", "・" };
+        private static readonly string[] MessageCommands = { "sel01", "sel02", "sel03", "sel04", "AddSelect", "Ruby" };
+        private static readonly string[] AllowedInlineCommands = { "r", "Ruby", "ruby_c", "heart", "・" };
 
         private ScriptStringType _currentStringType;
 
@@ -236,7 +236,7 @@ namespace VNTextPatch.Shared.Scripts.Kirikiri
                 text = PlainRubyRegex.Replace(text, ConvertPlainRubyToKirikiri);
 
             text = ProportionalWordWrapper.Default.Wrap(text);
-            text = text.Replace("\r\n", "[r]\r\n");
+            text = text.Replace("\r\n", "\r\n");
             return text;
         }
 
@@ -246,14 +246,14 @@ namespace VNTextPatch.Shared.Scripts.Kirikiri
             for (int i = commands.Count - 1; i >= 0; i--)
             {
                 Match command = commands[i];
-                if (GetCommandName(command) != "ruby")
+                if (GetCommandName(command) != "Ruby")
                     continue;
 
-                string ruby = GetAttributeValue(command, "text");
+                string ruby = GetAttributeValue(command, "mess");
                 if (ruby == null)
                     continue;
 
-                string chars = GetAttributeValue(command, "char");
+                string chars = GetAttributeValue(command, "read");
                 int textLength;
                 string text = null;
                 if (chars == null)
@@ -277,9 +277,9 @@ namespace VNTextPatch.Shared.Scripts.Kirikiri
 
         private static string ConvertPlainRubyToKirikiri(Match match)
         {
-            string text = match.Groups["text"].Value;
-            string ruby = match.Groups["ruby"].Value;
-            return $"[wrap text=\"{text.Replace("\"", "\\\"")}\"][ruby text=\"{ruby.Replace("\"", "\\\"")}\" char={text.Length}]{text}";
+            string text = match.Groups["read"].Value;
+            string ruby = match.Groups["Ruby"].Value;
+            return $"[wrap text=\"{text.Replace("\"", "\\\"")}\"][ruby mess=\"{ruby.Replace("\"", "\\\"")}\" read={text.Length}]{text}";
         }
 
         private static string GetCommandName(Match command)
